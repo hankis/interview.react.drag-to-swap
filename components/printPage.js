@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import Actions from "./actions";
+import CustomDragLayer from "./customDragLayer";
+import { useImageDataContext } from "../context/imageDataContext";
+import PrintImage from "./printImage";
 
 const Wrapper = styled.div`
   width: 600px;
@@ -32,33 +35,28 @@ const PageLayout = styled.div`
   justify-content: space-between;
 `;
 
-const PrintPhoto = styled.div`
-  width: calc(50% - 10px);
+export default function PrintPage() {
+  const { imagesData } = useImageDataContext();
 
-  img {
-    max-width: 100%;
-  }
-`;
-
-export default function PrintPage({ data }) {
   return (
     <>
+      <CustomDragLayer />
       <Wrapper>
-        {Object.values(data).map((entry, i) => {
+        {imagesData?.map((entry) => {
           return (
-            <PrintWrapper key={i}>
+            <PrintWrapper key={entry.title}>
               <Header>
                 <Title>{entry.title}</Title>
-                <Actions />
+                <Actions/>
               </Header>
               <PageLayout>
-                {entry.images.map((image) => {
-                  return (
-                    <PrintPhoto key={image}>
-                      <img src={image} alt="" />
-                    </PrintPhoto>
-                  );
-                })}
+                {entry.images.map((image, idx) => (
+                  <PrintImage
+                    image={image}
+                    entry={entry.title}
+                    key={entry.title + image + idx}
+                  />
+                ))}
               </PageLayout>
             </PrintWrapper>
           );

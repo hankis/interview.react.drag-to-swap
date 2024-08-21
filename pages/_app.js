@@ -1,10 +1,13 @@
 import { GlobalStyle } from "../styles/global";
+import ProvidersWrapper from "../components/providersWrapper";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
       <GlobalStyle />
-      <Component {...pageProps} />
+      <ProvidersWrapper>
+        <Component {...pageProps} />
+      </ProvidersWrapper>
     </>
   );
 }
